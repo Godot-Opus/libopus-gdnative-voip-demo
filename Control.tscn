@@ -1,8 +1,9 @@
-[gd_scene load_steps=6 format=2]
+[gd_scene load_steps=7 format=2]
 
 [ext_resource path="res://voip.gd" type="Script" id=1]
 [ext_resource path="res://addons/opus/OpusDecoderNode.gdns" type="Script" id=2]
 [ext_resource path="res://addons/opus/OpusEncoderNode.gdns" type="Script" id=3]
+[ext_resource path="res://icon.png" type="Texture" id=4]
 
 [sub_resource type="GDScript" id=1]
 script/source = "extends Control
@@ -81,6 +82,9 @@ margin_left = 220.0
 margin_top = 100.0
 margin_right = 980.0
 margin_bottom = 340.0
+__meta__ = {
+"_edit_use_anchors_": false
+}
 
 [node name="Output" type="AudioStreamPlayer" parent="."]
 script = ExtResource( 1 )
@@ -96,6 +100,10 @@ bit_rate = null
 
 [node name="OpusDecoder" type="Node" parent="."]
 script = ExtResource( 2 )
+
+[node name="icon" type="Sprite" parent="."]
+position = Vector2( 112, 238 )
+texture = ExtResource( 4 )
 [connection signal="pressed" from="Button_server" to="." method="_on_Button_server_pressed"]
 [connection signal="pressed" from="Button_client" to="." method="_on_Button_client_pressed"]
 [connection signal="button_down" from="Button_voice" to="." method="_on_Button_voice_button_down"]
