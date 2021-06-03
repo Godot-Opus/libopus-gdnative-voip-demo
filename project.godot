@@ -10,7 +10,6 @@ config_version=4
 
 _global_script_classes=[  ]
 _global_script_class_icons={
-
 }
 
 [application]
@@ -29,7 +28,7 @@ Network="*res://Network.gd"
 
 [editor_plugins]
 
-enabled=PoolStringArray( "opus" )
+enabled=PoolStringArray( "res://addons/opus/plugin.cfg" )
 
 [rendering]
 

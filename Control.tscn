@@ -88,6 +88,8 @@ __meta__ = {
 
 [node name="Output" type="AudioStreamPlayer" parent="."]
 script = ExtResource( 1 )
+opusEncoderPath = NodePath("../OpusEncoder")
+opusDecoderPath = NodePath("../OpusDecoder")
 
 [node name="Input" type="AudioStreamPlayer" parent="."]
 stream = SubResource( 2 )
@@ -96,7 +98,6 @@ bus = "Record"
 
 [node name="OpusEncoder" type="Node" parent="."]
 script = ExtResource( 3 )
-bit_rate = null
 
 [node name="OpusDecoder" type="Node" parent="."]
 script = ExtResource( 2 )
@@ -104,6 +105,7 @@ script = ExtResource( 2 )
 [node name="icon" type="Sprite" parent="."]
 position = Vector2( 112, 238 )
 texture = ExtResource( 4 )
+
 [connection signal="pressed" from="Button_server" to="." method="_on_Button_server_pressed"]
 [connection signal="pressed" from="Button_client" to="." method="_on_Button_client_pressed"]
 [connection signal="button_down" from="Button_voice" to="." method="_on_Button_voice_button_down"]
