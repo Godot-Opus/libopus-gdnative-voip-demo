@@ -1,11 +1,9 @@
-[gd_scene load_steps=7 format=2]
+[gd_scene load_steps=5 format=3]
 
-[ext_resource path="res://voip.gd" type="Script" id=1]
-[ext_resource path="res://addons/opus/OpusDecoderNode.gdns" type="Script" id=2]
-[ext_resource path="res://addons/opus/OpusEncoderNode.gdns" type="Script" id=3]
-[ext_resource path="res://icon.png" type="Texture" id=4]
+[ext_resource type="Script" path="res://voip.gd" id="1"]
+[ext_resource type="Texture2D" path="res://icon.png" id="4"]
 
-[sub_resource type="GDScript" id=1]
+[sub_resource type="GDScript" id="GDScript_ctrl"]
 script/source = "extends Control
 
 func _ready():
@@ -23,88 +21,77 @@ func _on_Button_client_pressed() -> void:
 
 func _on_Button_voice_button_down() -> void:
 	$Output.recording = true
-	
+
 func _on_Button_voice_button_up() -> void:
 	$Output.recording = false
 "
 
-[sub_resource type="AudioStreamMicrophone" id=2]
+[sub_resource type="AudioStreamMicrophone" id="AudioStreamMicrophone_mic"]
 
 [node name="Control" type="Control"]
 anchor_right = 1.0
 anchor_bottom = 1.0
-script = SubResource( 1 )
-__meta__ = {
-"_edit_use_anchors_": false
-}
+script = SubResource("GDScript_ctrl")
 
 [node name="Button_server" type="Button" parent="."]
-margin_left = 46.3451
-margin_top = 44.2765
-margin_right = 173.345
-margin_bottom = 64.2765
+offset_left = 46.0
+offset_top = 44.0
+offset_right = 173.0
+offset_bottom = 64.0
 text = "Start server"
 
 [node name="Button_client" type="Button" parent="."]
-margin_left = 46.3451
-margin_top = 80.0
-margin_right = 173.345
-margin_bottom = 100.0
+offset_left = 46.0
+offset_top = 80.0
+offset_right = 173.0
+offset_bottom = 100.0
 text = "Start client"
-__meta__ = {
-"_edit_use_anchors_": false
-}
 
 [node name="Button_voice" type="Button" parent="."]
-margin_left = 46.3451
-margin_top = 160.0
-margin_right = 173.345
-margin_bottom = 180.0
+offset_left = 46.0
+offset_top = 160.0
+offset_right = 173.0
+offset_bottom = 180.0
 disabled = true
 text = "Speak"
 
 [node name="Status" type="Label" parent="."]
-margin_left = 220.0
-margin_top = 44.2765
-margin_right = 370.0
-margin_bottom = 58.2765
+offset_left = 220.0
+offset_top = 44.0
+offset_right = 370.0
+offset_bottom = 58.0
 text = "Status:"
 
 [node name="Label2" type="Label" parent="."]
-margin_left = 220.0
-margin_top = 80.0
-margin_right = 370.0
-margin_bottom = 94.0
+offset_left = 220.0
+offset_top = 80.0
+offset_right = 370.0
+offset_bottom = 94.0
 text = "Log:"
 
 [node name="Log" type="Label" parent="."]
-margin_left = 220.0
-margin_top = 100.0
-margin_right = 980.0
-margin_bottom = 340.0
-__meta__ = {
-"_edit_use_anchors_": false
-}
+offset_left = 220.0
+offset_top = 100.0
+offset_right = 980.0
+offset_bottom = 340.0
 
 [node name="Output" type="AudioStreamPlayer" parent="."]
-script = ExtResource( 1 )
+script = ExtResource("1")
 opusEncoderPath = NodePath("../OpusEncoder")
 opusDecoderPath = NodePath("../OpusDecoder")
 
 [node name="Input" type="AudioStreamPlayer" parent="."]
-stream = SubResource( 2 )
+stream = SubResource("AudioStreamMicrophone_mic")
 autoplay = true
 bus = "Record"
 
-[node name="OpusEncoder" type="Node" parent="."]
-script = ExtResource( 3 )
+[node name="OpusEncoder" type="OpusEncoderNode" parent="."]
 
-[node name="OpusDecoder" type="Node" parent="."]
-script = ExtResource( 2 )
+[node name="OpusDecoder" type="OpusDecoderNode" parent="."]
 
-[node name="icon" type="Sprite" parent="."]
-position = Vector2( 112, 238 )
-texture = ExtResource( 4 )
+[node name="icon" type="Sprite2D" parent="."]
+position = Vector2(112, 238)
+texture = ExtResource("4")
 
 [connection signal="pressed" from="Button_server" to="." method="_on_Button_server_pressed"]
 [connection signal="pressed" from="Button_client" to="." method="_on_Button_client_pressed"]

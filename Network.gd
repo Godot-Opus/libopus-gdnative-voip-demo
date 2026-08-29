@@ -5,18 +5,18 @@ const MAX_PLAYERS = 20
 const SERVER_IP = "127.0.0.1"
 
 func start_client():
-	get_tree().connect("connected_to_server", self, "_connected_ok")
-	get_tree().connect("server_disconnected", self, "_server_disconnected")
-	get_tree().connect("connection_failed", self, "_connected_fail")
+	multiplayer.connected_to_server.connect(_connected_ok)
+	multiplayer.server_disconnected.connect(_server_disconnected)
+	multiplayer.connection_failed.connect(_connected_fail)
 
-	var peer = NetworkedMultiplayerENet.new()
+	var peer = ENetMultiplayerPeer.new()
 
 	var err = peer.create_client(SERVER_IP, SERVER_PORT)
 	if err != OK:
 		get_node("/root/Control/Status").text = "failed to create client!"
 		return
 
-	get_tree().set_network_peer(peer)
+	multiplayer.multiplayer_peer = peer
 
 	get_node("/root/Control/Status").text = "connecting..."
 	get_node("/root/Control/Button_voice").disabled = false
@@ -37,10 +37,10 @@ func _server_disconnected():
 ################################
 
 func start_server():
-	get_tree().connect("network_peer_connected", self, "_player_connected")
-	get_tree().connect("network_peer_disconnected", self, "_player_disconnected")
+	multiplayer.peer_connected.connect(_player_connected)
+	multiplayer.peer_disconnected.connect(_player_disconnected)
 
-	var peer = NetworkedMultiplayerENet.new()
+	var peer = ENetMultiplayerPeer.new()
 
 	var err = peer.create_server(SERVER_PORT, MAX_PLAYERS)
 
@@ -48,7 +48,7 @@ func start_server():
 		get_node("/root/Control/Status").text = "Failed to create server!"
 		return
 
-	get_tree().set_network_peer(peer)
+	multiplayer.multiplayer_peer = peer
 
 	get_node("/root/Control/Status").text = "server started"
 	get_node("/root/Control/Button_voice").disabled = false
@@ -59,4 +59,3 @@ func _player_connected(_id):
 
 func _player_disconnected(_id):
 	get_node("/root/Control/Log").text += "player with id: %s disconnected\n" % _id
-
