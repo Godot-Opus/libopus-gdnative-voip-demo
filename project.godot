@@ -21,6 +21,4 @@ driver/enable_input=true
 
 [autoload]
 
-
-
 Network="*res://Network.gd"
