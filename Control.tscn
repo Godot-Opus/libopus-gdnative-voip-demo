@@ -1,4 +1,4 @@
-[gd_scene load_steps=5 format=3]
+[gd_scene load_steps=6 format=3]
 
 [ext_resource type="Script" path="res://voip.gd" id="1"]
 [ext_resource type="Texture2D" path="res://icon.png" id="4"]
@@ -24,9 +24,16 @@ func _on_Button_voice_button_down() -> void:
 
 func _on_Button_voice_button_up() -> void:
 	$Output.recording = false
+
+func _on_Check_streaming_toggled(toggled_on: bool) -> void:
+	$Output.streaming = toggled_on
 "
 
 [sub_resource type="AudioStreamMicrophone" id="AudioStreamMicrophone_mic"]
+
+[sub_resource type="AudioStreamGenerator" id="AudioStreamGenerator_gen"]
+mix_rate = 48000.0
+buffer_length = 0.1
 
 [node name="Control" type="Control"]
 anchor_right = 1.0
@@ -55,6 +62,13 @@ offset_bottom = 180.0
 disabled = true
 text = "Speak"
 
+[node name="Check_streaming" type="CheckButton" parent="."]
+offset_left = 46.0
+offset_top = 196.0
+offset_right = 173.0
+offset_bottom = 220.0
+text = "Streaming"
+
 [node name="Status" type="Label" parent="."]
 offset_left = 220.0
 offset_top = 44.0
@@ -79,6 +93,10 @@ offset_bottom = 340.0
 script = ExtResource("1")
 opusEncoderPath = NodePath("../OpusEncoder")
 opusDecoderPath = NodePath("../OpusDecoder")
+streamPlayerPath = NodePath("../StreamOutput")
+
+[node name="StreamOutput" type="AudioStreamPlayer" parent="."]
+stream = SubResource("AudioStreamGenerator_gen")
 
 [node name="Input" type="AudioStreamPlayer" parent="."]
 stream = SubResource("AudioStreamMicrophone_mic")
@@ -97,3 +115,4 @@ texture = ExtResource("4")
 [connection signal="pressed" from="Button_client" to="." method="_on_Button_client_pressed"]
 [connection signal="button_down" from="Button_voice" to="." method="_on_Button_voice_button_down"]
 [connection signal="button_up" from="Button_voice" to="." method="_on_Button_voice_button_up"]
+[connection signal="toggled" from="Check_streaming" to="." method="_on_Check_streaming_toggled"]

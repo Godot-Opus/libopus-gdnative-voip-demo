@@ -15,9 +15,16 @@ What this project does, is it uses the [Godot-Opus wrapper](https://github.com/W
 
 The compressed data is often more than 100 times smaller than the raw PCM data making this feasible for a real project.
 
-## What this is not: Streaming audio
-This is a very simple form of VOIP. Press a button to record an audio sample. Only when the recording is completed is it compressed as a whole and sent to the remote clients. Then on the receiving end it is decompressed as a whole, and played back.
+## Two modes: whole-clip and streaming
 
-So this is very clearly not real-time voice chat. libOpus is specifically designed however to accomidate real-time voice chat and has many advanced features to facilitate it, which we are not using here.
+The **Streaming** toggle in the UI switches between two transmission modes.
 
-Godot 4 now provides the pieces needed for true streaming: `AudioEffectCapture` for pulling live mic frames and `AudioStreamGenerator` for playing back a live stream. Wiring those to Opus's streaming features is future work.
+### Whole-clip (toggle off)
+The original, very simple form of VOIP. Press a button to record an audio sample. Only when the recording is completed is it compressed as a whole and sent to the remote clients. Then on the receiving end it is decompressed as a whole, and played back. Latency is at least the length of the recording chunk (1 second here).
+
+### Streaming (toggle on)
+True live push-to-talk. While Speak is held, mic audio is pulled continuously from an `AudioEffectCapture` on the Record bus, fed to `OpusEncoderNode.push_audio()`, and every 20ms Opus packet is sent over an unreliable RPC as soon as it is ready. The receiver decodes each packet with `OpusDecoderNode.decode_frame()` and pushes the frames straight into an `AudioStreamGenerator`, so playback starts within tens of milliseconds.
+
+This mode requires a 48kHz mix rate, since Opus does not accept Godot's default 44.1kHz; `project.godot` sets `audio/driver/mix_rate=48000`.
+
+Left as an exercise: the demo shares a single output player and decoder for all remote peers, so two people talking at once will interleave into one stream. A real game would create one `AudioStreamPlayer` + `OpusDecoderNode` per remote peer, keyed by the sender id already passed in the RPC. Lost packets could also be concealed by tracking sequence numbers and calling `OpusDecoderNode.decode_dropped()` for each gap.
