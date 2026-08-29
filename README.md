@@ -1,15 +1,15 @@
-# godot-voip-opus-demo
+# libopus-gdnative-voip-demo
 A very simple demo showing how to implement voip with libOpus compression, for Godot 4.1+.
 
 Looking for the Godot 3.x version? It lives on the [`godot3` branch](../../tree/godot3).
 
 The base of this project was copied from:
-https://github.com/cbarsugman/godot-voip-demo
+https://github.com/ikbencasdoei/godot-voip
 
 ## Opus Compression
 Probably the biggest problem preventing VOIP from being implemented in Godot is the issue of compression.
 
-In the original VOIP demo by cbarsugam, recorded audio is transmitted as raw PCM data. This is the type of data inside of a `.wav` file. It is loseless raw audio samples, and it is huge. Far too large for a real game to transmit over the internet between players.
+In the original VOIP demo by ikbencasdoei, recorded audio is transmitted as raw PCM data. This is the type of data inside of a `.wav` file. It is loseless raw audio samples, and it is huge. Far too large for a real game to transmit over the internet between players.
 
 What this project does, is it uses the [Godot-Opus wrapper](https://github.com/Godot-Opus/libopus-gdnative) to compress the data before transmission, and on the receiving side decompress the data before playback. The wrapper is a GDExtension, so `OpusEncoderNode` and `OpusDecoderNode` are real node types available directly in the scene tree.
 
