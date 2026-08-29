@@ -15,7 +15,7 @@ func _on_Button_server_pressed() -> void:
 	$Button_client.disabled = true
 
 func _on_Button_client_pressed() -> void:
-	Network.start_client()
+	Network.start_client($Address.text)
 	$Button_server.disabled = true
 	$Button_client.disabled = true
 
@@ -53,6 +53,13 @@ offset_top = 80.0
 offset_right = 173.0
 offset_bottom = 100.0
 text = "Start client"
+
+[node name="Address" type="LineEdit" parent="."]
+offset_left = 46.0
+offset_top = 110.0
+offset_right = 210.0
+offset_bottom = 141.0
+placeholder_text = "Server IP (blank = local)"
 
 [node name="Button_voice" type="Button" parent="."]
 offset_left = 46.0
