@@ -11,7 +11,7 @@ Probably the biggest problem preventing VOIP from being implemented in Godot is 
 
 In the original VOIP demo by cbarsugam, recorded audio is transmitted as raw PCM data. This is the type of data inside of a `.wav` file. It is loseless raw audio samples, and it is huge. Far too large for a real game to transmit over the internet between players.
 
-What this project does, is it uses the [Godot-Opus wrapper](https://github.com/Wavesonics/libopus-gdnative) to compress the data before transmission, and on the receiving side decompress the data before playback. The wrapper is a GDExtension, so `OpusEncoderNode` and `OpusDecoderNode` are real node types available directly in the scene tree.
+What this project does, is it uses the [Godot-Opus wrapper](https://github.com/Godot-Opus/libopus-gdnative) to compress the data before transmission, and on the receiving side decompress the data before playback. The wrapper is a GDExtension, so `OpusEncoderNode` and `OpusDecoderNode` are real node types available directly in the scene tree.
 
 The compressed data is often more than 100 times smaller than the raw PCM data making this feasible for a real project.
 
@@ -37,6 +37,8 @@ Left as an exercise: the demo shares a single output player and decoder for all 
 4. Toggle **Streaming** on both, hold **Speak**, and talk.
 
 The connection uses UDP port 3000, so make sure the server machine's firewall allows it. Leaving the IP field blank connects to `127.0.0.1`, which keeps the old same-machine two-instance workflow working.
+
+The project ships Linux and Windows export presets that build a self-contained binary (embedded pck) into `export/<platform>/`; only the platform's Opus library ships alongside it.
 
 ## Using this as a Push to Talk recipe for your game
 
